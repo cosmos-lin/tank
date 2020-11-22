@@ -1,0 +1,9 @@
+*.iml
+.gitIgnore.swp
+build/
+.gradle/
+.ideal/
+local.properties
+app/build/
+
+app.iml
