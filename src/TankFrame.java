@@ -78,6 +78,8 @@ public class TankFrame extends Frame {
                 case KeyEvent.VK_DOWN:
                     bD = true;
                     break;
+                default: // 默认不匹配break
+                    break;
             }
         }
 
@@ -88,16 +90,18 @@ public class TankFrame extends Frame {
             int keyCode = e.getKeyCode();
             switch (keyCode){
                 case KeyEvent.VK_LEFT:
-                    bL = true;
+                    bL = false;
                     break;
                 case KeyEvent.VK_RIGHT:
-                    bR = true;
+                    bR = false;
                     break;
                 case KeyEvent.VK_UP:
-                    bU = true;
+                    bU = false;
                     break;
                 case KeyEvent.VK_DOWN:
-                    bD = true;
+                    bD = false;
+                    break;
+                default:
                     break;
             }
         }
