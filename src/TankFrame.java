@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -18,6 +20,9 @@ public class TankFrame extends Frame {
         setResizable(false);
         setTitle("tank war");
 
+        // 调用自定义key监听内部类
+        this.addKeyListener(new MyKeyListener());
+
         // 添加window监听事件，点击窗口退出按钮，执行退出
         // new WindowAdapter() 匿名内部类
         /*
@@ -29,7 +34,6 @@ public class TankFrame extends Frame {
              * Invoked when a window is in the process of being closed.
              * The close operation can be overridden at this point.
              *
-             * @param
              */
             @Override
             public void windowClosing(WindowEvent e) {
@@ -45,6 +49,23 @@ public class TankFrame extends Frame {
         System.out.println("paint");
         g.fillRect(x, y, 50, 50); // 绘制一个矩形
         x += 20;
-        y += 20;
+ //        y += 20;
+    }
+
+    //定义内部类继承KeyAdapter（处理键盘事件类）
+    static class MyKeyListener extends KeyAdapter{
+
+        @Override
+        // 监听key被按下时自动调 用
+        public void keyPressed(KeyEvent e) {
+//            System.out.println("keypress");
+//            x += 10;
+        }
+
+        // 监听key弹起时自动调用
+        @Override
+        public void keyReleased(KeyEvent e) {
+//            System.out.println("keyreleased");
+        }
     }
 }
