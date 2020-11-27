@@ -6,7 +6,7 @@ import java.awt.event.WindowEvent;
 
 public class TankFrame extends Frame {
 
-    int x = 200, y = 200;
+    private int x = 200, y = 200;
     /*
     继承Frame类，定义构造方法
      */
@@ -55,17 +55,51 @@ public class TankFrame extends Frame {
     //定义内部类继承KeyAdapter（处理键盘事件类）
     static class MyKeyListener extends KeyAdapter{
 
+        boolean bL = false;
+        boolean bR = false;
+        boolean bU = false;
+        boolean bD = false;
         @Override
         // 监听key被按下时自动调 用
         public void keyPressed(KeyEvent e) {
-//            System.out.println("keypress");
-//            x += 10;
+
+            // 判断key状态
+            int keyCode = e.getKeyCode();
+            switch (keyCode){
+                case KeyEvent.VK_LEFT:
+                    bL = true;
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    bR = true;
+                    break;
+                case KeyEvent.VK_UP:
+                    bU = true;
+                    break;
+                case KeyEvent.VK_DOWN:
+                    bD = true;
+                    break;
+            }
         }
 
         // 监听key弹起时自动调用
         @Override
         public void keyReleased(KeyEvent e) {
-//            System.out.println("keyreleased");
+
+            int keyCode = e.getKeyCode();
+            switch (keyCode){
+                case KeyEvent.VK_LEFT:
+                    bL = true;
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    bR = true;
+                    break;
+                case KeyEvent.VK_UP:
+                    bU = true;
+                    break;
+                case KeyEvent.VK_DOWN:
+                    bD = true;
+                    break;
+            }
         }
     }
 }
