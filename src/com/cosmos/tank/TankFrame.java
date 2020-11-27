@@ -1,3 +1,5 @@
+package com.cosmos.tank;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -7,6 +9,8 @@ import java.awt.event.WindowEvent;
 public class TankFrame extends Frame {
 
     private int x = 200, y = 200;
+    static Dir dir = Dir.DOWN;
+    private final static int SPEED = 10;
     /*
     继承Frame类，定义构造方法
      */
@@ -48,8 +52,21 @@ public class TankFrame extends Frame {
     public void paint(Graphics g) {
         System.out.println("paint");
         g.fillRect(x, y, 50, 50); // 绘制一个矩形
-        x += 20;
- //        y += 20;
+
+        switch (dir){
+            case UP:
+                y-=SPEED;
+                break;
+            case DOWN:
+                y+=SPEED;
+                break;
+            case LEFT:
+                x+=SPEED;
+                break;
+            case RIGHT:
+                x-=SPEED;
+                break;
+        }
     }
 
     //定义内部类继承KeyAdapter（处理键盘事件类）
@@ -81,6 +98,14 @@ public class TankFrame extends Frame {
                 default: // 默认不匹配break
                     break;
             }
+            setMainTankDir();
+        }
+
+        private void setMainTankDir() {
+            if (bL) dir = Dir.LEFT;
+            if (bD) dir = Dir.DOWN;
+            if (bR) dir = Dir.RIGHT;
+            if (bU) dir = Dir.UP;
         }
 
         // 监听key弹起时自动调用
@@ -104,6 +129,7 @@ public class TankFrame extends Frame {
                 default:
                     break;
             }
+            setMainTankDir();
         }
     }
 }
