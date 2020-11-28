@@ -33,7 +33,10 @@ public class Tank{
 
     // 重写paint方法；paint方法是窗口绘制时系统自动调用(每次绘制都会调用)
     public void paint(Graphics g) {
+        Color color = g.getColor();
+        g.setColor(color.BLUE);
         g.fillRect(x, y, 50, 50); // 绘制一个矩形
+        g.setColor(color);
         moving();
     }
 

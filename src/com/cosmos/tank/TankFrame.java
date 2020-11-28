@@ -8,6 +8,7 @@ import java.awt.event.WindowEvent;
 
 public class TankFrame extends Frame {
 
+    private static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
     private Tank myTank = new Tank(200, 200, Dir.DOWN);
     Bullet bullet = new Bullet(200, 200, Dir.DOWN);
     /*
@@ -18,7 +19,7 @@ public class TankFrame extends Frame {
         // setVisible(true)设置为可见
         setVisible(true);
         // 设置窗口大小
-        setSize(800, 600);
+        setSize(GAME_WIDTH, GAME_HEIGHT);
         //设置窗口为不可变
         setResizable(false);
         setTitle("tank war");
@@ -44,6 +45,21 @@ public class TankFrame extends Frame {
             }
         });
 
+    }
+    // 处理双缓冲（内存-> 显存）；解决闪烁
+    Image offScreenImage = null;
+    @Override
+    public void update(Graphics g) {
+        if(offScreenImage == null) {
+            offScreenImage = this.createImage(GAME_WIDTH, GAME_HEIGHT);
+        }
+        Graphics gOffScreen = offScreenImage.getGraphics();
+        Color c = gOffScreen.getColor();
+        gOffScreen.setColor(Color.BLACK);
+        gOffScreen.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+        gOffScreen.setColor(c);
+        paint(gOffScreen);
+        g.drawImage(offScreenImage, 0, 0, null);
     }
 
     // 重写paint方法；paint方法是窗口绘制时系统自动调用(每次绘制都会调用)
