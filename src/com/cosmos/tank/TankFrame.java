@@ -8,9 +8,7 @@ import java.awt.event.WindowEvent;
 
 public class TankFrame extends Frame {
 
-    private int x = 200, y = 200;
-    static Dir dir = Dir.DOWN;
-    private final static int SPEED = 10;
+    private Tank myTank = new Tank(200, 200, Dir.DOWN);
     /*
     继承Frame类，定义构造方法
      */
@@ -50,23 +48,8 @@ public class TankFrame extends Frame {
     // 重写paint方法；paint方法是窗口绘制时系统自动调用(每次绘制都会调用)
     @Override
     public void paint(Graphics g) {
-        System.out.println("paint");
-        g.fillRect(x, y, 50, 50); // 绘制一个矩形
+        myTank.paint(g);
 
-        switch (dir){
-            case UP:
-                y-=SPEED;
-                break;
-            case DOWN:
-                y+=SPEED;
-                break;
-            case LEFT:
-                x+=SPEED;
-                break;
-            case RIGHT:
-                x-=SPEED;
-                break;
-        }
     }
 
     //定义内部类继承KeyAdapter（处理键盘事件类）
@@ -102,10 +85,15 @@ public class TankFrame extends Frame {
         }
 
         private void setMainTankDir() {
-            if (bL) dir = Dir.LEFT;
-            if (bD) dir = Dir.DOWN;
-            if (bR) dir = Dir.RIGHT;
-            if (bU) dir = Dir.UP;
+            if (!bU && !bL && !bR && !bD) Tank.setMove(false);
+            else {
+                Tank.setMove(true);
+                if (bL) Tank.setDir(Dir.LEFT);
+                if (bU) Tank.setDir(Dir.UP);
+                if (bR) Tank.setDir(Dir.RIGHT);
+                if (bD) Tank.setDir(Dir.DOWN);
+
+            }
         }
 
         // 监听key弹起时自动调用
