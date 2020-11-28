@@ -5,12 +5,17 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class TankFrame extends Frame {
 
-    private static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
-    private Tank myTank = new Tank(200, 200, Dir.DOWN);
-    Bullet bullet = new Bullet(200, 200, Dir.DOWN);
+    static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
+    // new Tank对象时，将自己传入Tank，从而让Tank可以引用TankFrame
+    private Tank myTank = new Tank(200, 200, Dir.DOWN, this);
+    // 定义队列存储子弹
+    List<Bullet> bullets = new ArrayList<>();
     /*
     继承Frame类，定义构造方法
      */
@@ -27,8 +32,7 @@ public class TankFrame extends Frame {
         // 调用自定义key监听内部类
         this.addKeyListener(new MyKeyListener());
 
-        // 添加window监听事件，点击窗口退出按钮，执行退出
-        // new WindowAdapter() 匿名内部类
+        // 添加window监听事件，点击窗口退出按钮，执行退出; new WindowAdapter() 匿名内部类
         /*
         addWindowListener 要求我们传入WindowListener;此处我们,new WindowAdapter是实现了
         windowListener的接口（可以认为是windowListener的子类);重写windowClosing方法，实现系统退出功能
@@ -66,12 +70,30 @@ public class TankFrame extends Frame {
     @Override
     public void paint(Graphics g) {
         myTank.paint(g);
-        bullet.paint(g);
+        Color color = g.getColor();
+        g.setColor(color.WHITE);
+        g.drawString("子弹数量：" + bullets.size(),10, 60);
+        g.setColor(color);
+        // 遍历子弹夹，绘制子弹
+
+        for (int i=0; i<bullets.size(); i++){
+            bullets.get(i).paint(g);
+        }
+        // 方法二 迭代器遍历 迭代过程中删除子弹
+//        for (Iterator<Bullet> it = bullets.iterator(); it.hasNext()){
+//            Bullet bullet = it.next();
+//            bullet.paint(g);
+//        }
+
+        //此种方法遍历会出现"AWT-EventQueue-0异常错误
+//        for (Bullet bullet : bullets) {
+//            bullet.paint(g);
+//        }
 
     }
 
     //定义内部类继承KeyAdapter（处理键盘事件类）
-    static class MyKeyListener extends KeyAdapter{
+     class MyKeyListener extends KeyAdapter{
 
         boolean bL = false;
         boolean bR = false;
@@ -103,13 +125,13 @@ public class TankFrame extends Frame {
         }
 
         private void setMainTankDir() {
-            if (!bU && !bL && !bR && !bD) Tank.setMove(false);
+            if (!bU && !bL && !bR && !bD) myTank.setMove(false);
             else {
-                Tank.setMove(true);
-                if (bL) Tank.setDir(Dir.LEFT);
-                if (bU) Tank.setDir(Dir.UP);
-                if (bR) Tank.setDir(Dir.RIGHT);
-                if (bD) Tank.setDir(Dir.DOWN);
+                myTank.setMove(true);
+                if (bL) myTank.setDir(Dir.LEFT);
+                if (bU) myTank.setDir(Dir.UP);
+                if (bR) myTank.setDir(Dir.RIGHT);
+                if (bD) myTank.setDir(Dir.DOWN);
 
             }
         }
@@ -131,6 +153,9 @@ public class TankFrame extends Frame {
                     break;
                 case KeyEvent.VK_DOWN:
                     bD = false;
+                    break;
+                case KeyEvent.VK_CONTROL:
+                    myTank.fire();
                     break;
                 default:
                     break;

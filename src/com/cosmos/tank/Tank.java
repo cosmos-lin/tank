@@ -7,27 +7,35 @@ public class Tank{
     static Dir dir = Dir.DOWN;
     private final static int SPEED = 5;
     static boolean move = false;
+    private TankFrame tf = null;
 
-    Tank(int x, int y, Dir dir){
+    Tank(int x, int y, Dir dir, TankFrame tf){
         super();
         this.x = x;
         this.y = y;
-        Tank.dir = dir;
+        this.dir = dir;
+        this.tf = tf;
     }
 
-    public static void setDir(Dir dir) {
-        Tank.dir = dir;
+    public void setDir(Dir dir) {
+        this.dir = dir;
     }
 
-    public static Dir getDir() {
+    public Dir getDir() {
         return dir;
     }
 
-    public static void setMove(boolean move) {
-        Tank.move = move;
+    public void setMove(boolean move) {
+        this.move = move;
     }
 
-    public boolean isMoving(){
+    // 子弹发射方法(调用fire;new一颗子弹add到子弹容器)
+    public void fire() {
+        // 将TankFrame 传给Bullet; Bullet可以继续引用TankFrame
+        tf.bullets.add(new Bullet(this.x, this.y, this.dir, this.tf));
+    }
+
+    public boolean isMove(){
         return move;
     }
 
