@@ -7,10 +7,10 @@ public class Bullet {
 //    private static Dir dir; // 注意如果static修饰，子弹会随tank一起改变方向
     private Dir dir;
     private final static int SPEED = 10;
-    private final static int WIDTH = 5;
-    private final static int HEIGHT = 15;
     TankFrame tf = null;
     private boolean live = true;
+    public static int WIDTH = ResourceMgr.bulletD.getWidth();
+    public static int HEIGHT = ResourceMgr.bulletD.getHeight();
 
     // 构造方法
     Bullet(int x, int y, Dir dir, TankFrame tf){
@@ -27,11 +27,21 @@ public class Bullet {
         if (!live) {
             tf.bullets.remove(this);
         }
-        Color color = g.getColor();
-        g.setColor(Color.RED);
-        // 设定子弹形状
-        g.fillOval(x, y, WIDTH, HEIGHT);
-        g.setColor(color);
+
+        switch (dir) {
+            case LEFT:
+                g.drawImage(ResourceMgr.bulletL, x, y, null);
+                break;
+            case RIGHT:
+                g.drawImage(ResourceMgr.bulletR, x, y, null);
+                break;
+            case UP:
+                g.drawImage(ResourceMgr.bulletU, x, y, null);
+                break;
+            case DOWN:
+                g.drawImage(ResourceMgr.bulletD, x, y, null);
+                break;
+        }
 
         moving();
 

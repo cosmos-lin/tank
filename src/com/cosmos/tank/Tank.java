@@ -8,6 +8,8 @@ public class Tank{
     private final static int SPEED = 5;
     static boolean move = false;
     private TankFrame tf = null;
+    public static int WIDTH = ResourceMgr.tankD.getWidth();
+    public static int HEIGHT = ResourceMgr.tankD.getHeight();
 
     Tank(int x, int y, Dir dir, TankFrame tf){
         super();
@@ -31,8 +33,11 @@ public class Tank{
 
     // 子弹发射方法(调用fire;new一颗子弹add到子弹容器)
     public void fire() {
+        // 计算子弹在坦克中心位置发出
+        int bX = this.x + Tank.WIDTH / 2 - Bullet.WIDTH / 2;
+        int bY = this.y + Tank.HEIGHT / 2 - Bullet.HEIGHT / 2;
         // 将TankFrame 传给Bullet; Bullet可以继续引用TankFrame
-        tf.bullets.add(new Bullet(this.x, this.y, this.dir, this.tf));
+        tf.bullets.add(new Bullet(bX, bY, this.dir, this.tf));
     }
 
     public boolean isMove(){
@@ -41,10 +46,21 @@ public class Tank{
 
     // 重写paint方法；paint方法是窗口绘制时系统自动调用(每次绘制都会调用)
     public void paint(Graphics g) {
-        Color color = g.getColor();
-        g.setColor(color.BLUE);
-        g.fillRect(x, y, 50, 50); // 绘制一个矩形
-        g.setColor(color);
+        // 读取tank图片
+        switch (dir){
+            case LEFT:
+                g.drawImage(ResourceMgr.tankL, x, y, null);
+                break;
+            case RIGHT:
+                g.drawImage(ResourceMgr.tankR, x, y, null);
+                break;
+            case UP:
+                g.drawImage(ResourceMgr.tankU, x, y, null);
+                break;
+            case DOWN:
+                g.drawImage(ResourceMgr.tankD, x, y, null);
+                break;
+        }
         moving();
     }
 
