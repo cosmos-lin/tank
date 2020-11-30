@@ -16,6 +16,8 @@ public class TankFrame extends Frame {
     private Tank myTank = new Tank(200, 200, Dir.DOWN, this);
     // 定义队列存储子弹
     List<Bullet> bullets = new ArrayList<>();
+    // 定义队列存储敌方坦克
+    List<Tank> tanks = new ArrayList<>();
     /*
     继承Frame类，定义构造方法
      */
@@ -73,11 +75,17 @@ public class TankFrame extends Frame {
         Color color = g.getColor();
         g.setColor(color.WHITE);
         g.drawString("子弹数量：" + bullets.size(),10, 60);
+        g.drawString("敌方坦克数量：" + tanks.size(),10, 80);
         g.setColor(color);
         // 遍历子弹夹，绘制子弹
 
         for (int i=0; i<bullets.size(); i++){
             bullets.get(i).paint(g);
+        }
+
+        // 画出敌方坦克
+        for (int i = 0; i < tanks.size(); i++) {
+            tanks.get(i).paint(g);
         }
         // 方法二 迭代器遍历 迭代过程中删除子弹
 //        for (Iterator<Bullet> it = bullets.iterator(); it.hasNext()){
