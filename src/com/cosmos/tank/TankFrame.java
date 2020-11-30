@@ -87,16 +87,13 @@ public class TankFrame extends Frame {
         for (int i = 0; i < tanks.size(); i++) {
             tanks.get(i).paint(g);
         }
-        // 方法二 迭代器遍历 迭代过程中删除子弹
-//        for (Iterator<Bullet> it = bullets.iterator(); it.hasNext()){
-//            Bullet bullet = it.next();
-//            bullet.paint(g);
-//        }
 
-        //此种方法遍历会出现"AWT-EventQueue-0异常错误
-//        for (Bullet bullet : bullets) {
-//            bullet.paint(g);
-//        }
+        // 遍历每颗子弹和坦克，进行碰撞检测
+        for (int i = 0; i < bullets.size(); i++) {
+            for (int j = 0; j < tanks.size(); j++) {
+                bullets.get(i).collideWith(tanks.get(j));
+            }
+        }
 
     }
 

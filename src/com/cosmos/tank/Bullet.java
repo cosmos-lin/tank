@@ -8,9 +8,10 @@ public class Bullet {
     private Dir dir;
     private final static int SPEED = 10;
     TankFrame tf = null;
-    private boolean live = true;
     public static int WIDTH = ResourceMgr.bulletD.getWidth();
     public static int HEIGHT = ResourceMgr.bulletD.getHeight();
+
+    public static boolean living = true;
 
     // 构造方法
     Bullet(int x, int y, Dir dir, TankFrame tf){
@@ -23,10 +24,8 @@ public class Bullet {
     // 封装自动paint(画出自己的位置）
     public void paint(Graphics g){
 
-        // live为false,删除子弹本身对象
-        if (!live) {
-            tf.bullets.remove(this);
-        }
+        // living为false,删除子弹本身对象
+        if (!living) tf.bullets.remove(this);
 
         switch (dir) {
             case LEFT:
@@ -64,6 +63,21 @@ public class Bullet {
                 break;
         }
         // 定义子弹存活条件
-        if (x < 0 || x > TankFrame.GAME_WIDTH || y < 0 || y > TankFrame.GAME_HEIGHT) live = false;
+        if (x < 0 || x > TankFrame.GAME_WIDTH || y < 0 || y > TankFrame.GAME_HEIGHT) living = false;
+    }
+
+    // 定义碰撞检测方法
+    public void collideWith(Tank tank) {
+        Rectangle rect1 = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
+        Rectangle rect2 = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH, Tank.HEIGHT);
+        if (rect1.intersects(rect2)) {
+            living = false;
+            tank.die();
+            this.die();
+        }
+    }
+
+    private void die() {
+        living = false;
     }
 }

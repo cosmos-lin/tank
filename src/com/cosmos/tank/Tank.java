@@ -4,13 +4,15 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Tank{
-    private int x,y;
+    private int x;
     static Dir dir = Dir.DOWN;
     private final static int SPEED = 5;
     static boolean move = false;
     private TankFrame tf = null;
     public static int WIDTH = ResourceMgr.tankD.getWidth();
     public static int HEIGHT = ResourceMgr.tankD.getHeight();
+
+    private static boolean living = true;
 
     Tank(int x, int y, Dir dir, TankFrame tf){
         super();
@@ -47,6 +49,9 @@ public class Tank{
 
     // 重写paint方法；paint方法是窗口绘制时系统自动调用(每次绘制都会调用)
     public void paint(Graphics g) {
+
+        // living为false, 删除坦克
+        if (!living) tf.tanks.remove(this);
         // 读取tank图片
         switch (dir){
             case LEFT:
@@ -83,5 +88,27 @@ public class Tank{
                 x += SPEED;
                 break;
         }
+    }
+
+    public void die(){
+        living = false;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    private int y;
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 }
