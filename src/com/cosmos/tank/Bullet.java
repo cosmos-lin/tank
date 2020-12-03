@@ -6,19 +6,21 @@ public class Bullet {
     private int x,y;
 //    private static Dir dir; // 注意如果static修饰，子弹会随tank一起改变方向
     private Dir dir;
+    private Group group = Group.BAD;
     private final static int SPEED = 10;
     TankFrame tf = null;
     public static int WIDTH = ResourceMgr.bulletD.getWidth();
     public static int HEIGHT = ResourceMgr.bulletD.getHeight();
 
-    public static boolean living = true;
+    public boolean living = true;
 
     // 构造方法
-    Bullet(int x, int y, Dir dir, TankFrame tf){
+    Bullet(int x, int y, Dir dir, TankFrame tf, Group group){
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.tf = tf;
+        this.group = group;
     }
 
     // 封装自动paint(画出自己的位置）
@@ -68,6 +70,7 @@ public class Bullet {
 
     // 定义碰撞检测方法
     public void collideWith(Tank tank) {
+        if (this.group == tank.getGroup()) return;
         Rectangle rect1 = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
         Rectangle rect2 = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH, Tank.HEIGHT);
         if (rect1.intersects(rect2)) {

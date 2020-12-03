@@ -2,24 +2,36 @@ package com.cosmos.tank;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Tank{
-    private int x;
-    static Dir dir = Dir.DOWN;
-    private final static int SPEED = 5;
-    static boolean move = false;
+    private int x, y;
+    private Dir dir = Dir.DOWN;
+    private Group group = Group.BAD;
+    private final static int SPEED = 1;
+    private boolean move = true;
     private TankFrame tf = null;
     public static int WIDTH = ResourceMgr.tankD.getWidth();
     public static int HEIGHT = ResourceMgr.tankD.getHeight();
 
-    private static boolean living = true;
+    private boolean living = true;
+    private Random random = new Random();
 
-    Tank(int x, int y, Dir dir, TankFrame tf){
+    Tank(int x, int y, Dir dir, TankFrame tf, Group group){
         super();
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.tf = tf;
+        this.group = group;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public void setDir(Dir dir) {
@@ -40,7 +52,9 @@ public class Tank{
         int bX = this.x + Tank.WIDTH / 2 - Bullet.WIDTH / 2;
         int bY = this.y + Tank.HEIGHT / 2 - Bullet.HEIGHT / 2;
         // 将TankFrame 传给Bullet; Bullet可以继续引用TankFrame
-        tf.bullets.add(new Bullet(bX, bY, this.dir, this.tf));
+        // 定义弹夹中子弹属性；
+        tf.bullets.add(new Bullet(bX, bY, this.dir, this.tf, this.group));
+
     }
 
     public boolean isMove(){
@@ -88,6 +102,8 @@ public class Tank{
                 x += SPEED;
                 break;
         }
+        // 敌方坦克移动时随机发射子弹
+        if (random.nextInt(10) > 8) this.fire();
     }
 
     public void die(){
@@ -101,8 +117,6 @@ public class Tank{
     public void setY(int y) {
         this.y = y;
     }
-
-    private int y;
 
     public int getX() {
         return x;

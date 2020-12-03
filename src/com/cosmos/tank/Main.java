@@ -7,7 +7,7 @@ public class Main {
         for (int i=0; i<5; i++){
 
             //  初始化敌方坦克
-            tankFrame.tanks.add(new Tank(50+i*80, 100, Dir.DOWN, tankFrame));
+            tankFrame.tanks.add(new Tank(50+i*80, 100, Dir.DOWN, tankFrame,Group.BAD));
         }
 
         while (true){
