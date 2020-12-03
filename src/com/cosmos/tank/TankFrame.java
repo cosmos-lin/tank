@@ -18,6 +18,8 @@ public class TankFrame extends Frame {
     List<Bullet> bullets = new ArrayList<>();
     // 定义队列存储敌方坦克
     List<Tank> tanks = new ArrayList<>();
+
+    EXplode e = new EXplode(100, 100, this);
     /*
     继承Frame类，定义构造方法
      */
@@ -94,6 +96,8 @@ public class TankFrame extends Frame {
                 bullets.get(i).collideWith(tanks.get(j));
             }
         }
+
+        e.paint(g);
 
     }
 
