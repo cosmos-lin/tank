@@ -8,11 +8,11 @@ public class Tank{
     private int x, y;
     private Dir dir = Dir.DOWN;
     private Group group = Group.BAD;
-    private final static int SPEED = 1;
+    private final static int SPEED = 2;
     private boolean move = true;
     private TankFrame tf = null;
-    public static int WIDTH = ResourceMgr.tankD.getWidth();
-    public static int HEIGHT = ResourceMgr.tankD.getHeight();
+    public static int WIDTH = ResourceMgr.tankU.getWidth();
+    public static int HEIGHT = ResourceMgr.tankU.getHeight();
 
     private boolean living = true;
     private Random random = new Random();
@@ -54,6 +54,9 @@ public class Tank{
         // 将TankFrame 传给Bullet; Bullet可以继续引用TankFrame
         // 定义弹夹中子弹属性；
         tf.bullets.add(new Bullet(bX, bY, this.dir, this.tf, this.group));
+
+        // 定义爆炸声音
+        if (this.group == group.GOOD) new Thread(() -> new Audio("audio/tank_fire.wav").play()).start();
 
     }
 

@@ -2,6 +2,8 @@ package com.cosmos.tank;
 
 import java.awt.*;
 
+import static com.cosmos.tank.ResourceMgr.explodes;
+
 public class Bullet {
     private int x,y;
 //    private static Dir dir; // 注意如果static修饰，子弹会随tank一起改变方向
@@ -77,6 +79,9 @@ public class Bullet {
             living = false;
             tank.die();
             this.die();
+
+            // 将碰撞爆炸加入到explodes队列
+            tf.explodes.add(new EXplode(this.x, this.y, this.tf));
         }
     }
 

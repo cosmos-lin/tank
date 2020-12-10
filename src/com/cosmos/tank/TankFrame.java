@@ -11,15 +11,17 @@ import java.util.List;
 
 public class TankFrame extends Frame {
 
-    static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
+    static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
     // new Tank对象时，将自己传入Tank，从而让Tank可以引用TankFrame
     private Tank myTank = new Tank(200, 200, Dir.DOWN, this, Group.GOOD);
     // 定义队列存储子弹
     List<Bullet> bullets = new ArrayList<>();
     // 定义队列存储敌方坦克
     List<Tank> tanks = new ArrayList<>();
+    // 定义存储爆炸队列
+    List<EXplode> explodes = new ArrayList<>();
 
-    EXplode e = new EXplode(100, 100, this);
+    EXplode eXplode = new EXplode(100, 100, this);
     /*
     继承Frame类，定义构造方法
      */
@@ -78,6 +80,7 @@ public class TankFrame extends Frame {
         g.setColor(color.WHITE);
         g.drawString("子弹数量：" + bullets.size(),10, 60);
         g.drawString("敌方坦克数量：" + tanks.size(),10, 80);
+        g.drawString("爆炸数量：" + explodes.size(),10, 100);
         g.setColor(color);
         // 遍历子弹夹，绘制子弹
 
@@ -97,7 +100,10 @@ public class TankFrame extends Frame {
             }
         }
 
-        e.paint(g);
+        // 画出爆炸画面
+        for (int i = 0; i < explodes.size(); i++) {
+            explodes.get(i).paint(g);
+        }
 
     }
 
@@ -170,6 +176,8 @@ public class TankFrame extends Frame {
                     break;
             }
             setMainTankDir();
+
+            new Thread(() -> new Audio("audio/tank_move.wav").play()).start();
         }
     }
 }

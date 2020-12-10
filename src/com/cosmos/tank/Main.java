@@ -11,7 +11,7 @@ public class Main {
         }
 
         while (true){
-            Thread.sleep(50);
+            Thread.sleep(25);
             // repaint会自动调用paint方法
             tankFrame.repaint();
         }
