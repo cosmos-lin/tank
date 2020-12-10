@@ -22,13 +22,12 @@ public class EXplode {
 
     public void paint(Graphics g) {
         // 爆炸状态为false,移出队列
-        if (!living) tf.explodes.remove(this);
         g.drawImage(ResourceMgr.explodes[step++], x, y, null);
         if (step >= ResourceMgr.explodes.length){
             step = 0;
+            // 画完爆炸效果后移除队列
+            tf.explodes.remove(this);
         }
-        // living 初始化为true，画完爆炸效果后置为false
-        living = false;
 
     }
 }
