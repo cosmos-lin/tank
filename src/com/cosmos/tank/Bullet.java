@@ -16,6 +16,8 @@ public class Bullet {
 
     public boolean living = true;
 
+    Rectangle rect = new Rectangle();
+
     // 构造方法
     Bullet(int x, int y, Dir dir, TankFrame tf, Group group){
         this.x = x;
@@ -23,6 +25,12 @@ public class Bullet {
         this.dir = dir;
         this.tf = tf;
         this.group = group;
+
+        //
+        rect.x = x;
+        rect.y = y;
+        rect.width = WIDTH;
+        rect.height = HEIGHT;
     }
 
     // 封装自动paint(画出自己的位置）
@@ -68,20 +76,25 @@ public class Bullet {
         }
         // 定义子弹存活条件
         if (x < 0 || x > TankFrame.GAME_WIDTH || y < 0 || y > TankFrame.GAME_HEIGHT) living = false;
+
+        // update rect
+        rect.x = x;
+        rect.y = y;
     }
 
     // 定义碰撞检测方法
     public void collideWith(Tank tank) {
         if (this.group == tank.getGroup()) return;
-        Rectangle rect1 = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
-        Rectangle rect2 = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH, Tank.HEIGHT);
-        if (rect1.intersects(rect2)) {
-            living = false;
+//        Rectangle rect1 = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
+//        Rectangle rect2 = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH, Tank.HEIGHT);
+        if (rect.intersects(tank.rect)) {
             tank.die();
             this.die();
 
+            int eX = tank.getX() + Tank.WIDTH/2 - EXplode.WIDTH/2;
+            int eY = tank.getY() + Tank.HEIGHT/2 - EXplode.HEIGHT/2;
             // 将碰撞爆炸加入到explodes队列
-            tf.explodes.add(new EXplode(this.x, this.y, this.tf));
+            tf.explodes.add(new EXplode(eX, eY, tf));
         }
     }
 

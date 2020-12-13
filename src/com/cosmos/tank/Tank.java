@@ -17,6 +17,8 @@ public class Tank{
     private boolean living = true;
     private Random random = new Random();
 
+    Rectangle rect = new Rectangle();
+
     Tank(int x, int y, Dir dir, TankFrame tf, Group group){
         super();
         this.x = x;
@@ -24,6 +26,11 @@ public class Tank{
         this.dir = dir;
         this.tf = tf;
         this.group = group;
+
+        rect.x = x;
+        rect.y = y;
+        rect.width = WIDTH;
+        rect.height = HEIGHT;
     }
 
     public Group getGroup() {
@@ -112,9 +119,14 @@ public class Tank{
 
         // tank 边界检测
         boundsCheck();
+
+        // update rect
+        rect.x = x;
+        rect.y = y;
     }
 
     private void boundsCheck() {
+        // 边界检测
         if (x < 2) x = 2;
         if (y < 25) y = 25;
         if (x+WIDTH > TankFrame.GAME_WIDTH) x = TankFrame.GAME_WIDTH - WIDTH;
