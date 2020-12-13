@@ -11,8 +11,8 @@ public class Tank{
     private final static int SPEED = 2;
     private boolean move = true;
     private TankFrame tf = null;
-    public static int WIDTH = ResourceMgr.tankU.getWidth();
-    public static int HEIGHT = ResourceMgr.tankU.getHeight();
+    public static int WIDTH = ResourceMgr.GoodtankU.getWidth();
+    public static int HEIGHT = ResourceMgr.GoodtankU.getHeight();
 
     private boolean living = true;
     private Random random = new Random();
@@ -56,7 +56,7 @@ public class Tank{
         tf.bullets.add(new Bullet(bX, bY, this.dir, this.tf, this.group));
 
         // 定义爆炸声音
-        if (this.group == group.GOOD) new Thread(() -> new Audio("audio/tank_fire.wav").play()).start();
+        if (this.group == Group.GOOD) new Thread(() -> new Audio("audio/tank_fire.wav").play()).start();
 
     }
 
@@ -72,16 +72,16 @@ public class Tank{
         // 读取tank图片
         switch (dir){
             case LEFT:
-                g.drawImage(ResourceMgr.tankL, x, y, null);
+                g.drawImage(this.group == Group.GOOD ?  ResourceMgr.GoodtankL : ResourceMgr.BadtankL, x, y, null);
                 break;
             case RIGHT:
-                g.drawImage(ResourceMgr.tankR, x, y, null);
+                g.drawImage(this.group == Group.GOOD ? ResourceMgr.GoodtankR : ResourceMgr.BadtankR, x, y, null);
                 break;
             case UP:
-                g.drawImage(ResourceMgr.tankU, x, y, null);
+                g.drawImage(this.group == Group.GOOD ? ResourceMgr.GoodtankU : ResourceMgr.BadtankU, x, y, null);
                 break;
             case DOWN:
-                g.drawImage(ResourceMgr.tankD, x, y, null);
+                g.drawImage(this.group == Group.GOOD ? ResourceMgr.GoodtankD : ResourceMgr.BadtankD, x, y, null);
                 break;
         }
         moving();
