@@ -109,6 +109,16 @@ public class Tank{
         if (random.nextInt(10) > 8 && this.group == Group.BAD) this.fire();
         // 敌方坦克随机更换方向
         if (random.nextInt(100) > 95 && this.group == Group.BAD) randomDir();
+
+        // tank 边界检测
+        boundsCheck();
+    }
+
+    private void boundsCheck() {
+        if (x < 2) x = 2;
+        if (y < 25) y = 25;
+        if (x+WIDTH > TankFrame.GAME_WIDTH) x = TankFrame.GAME_WIDTH - WIDTH;
+        if (y+HEIGHT > TankFrame.GAME_HEIGHT) y = TankFrame.GAME_HEIGHT - HEIGHT;
     }
 
     private void randomDir() {
