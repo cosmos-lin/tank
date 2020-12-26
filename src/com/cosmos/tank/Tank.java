@@ -1,16 +1,15 @@
 package com.cosmos.tank;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Random;
 
 public class Tank{
-    private int x, y;
-    private Dir dir = Dir.DOWN;
-    private Group group = Group.BAD;
+    int x, y;
+    Dir dir = Dir.DOWN;
+    Group group = Group.BAD;
     private final static int SPEED = 2;
     private boolean move = true;
-    private TankFrame tf = null;
+    TankFrame tf = null;
     public static int WIDTH = ResourceMgr.GoodtankU.getWidth();
     public static int HEIGHT = ResourceMgr.GoodtankU.getHeight();
 
@@ -18,6 +17,8 @@ public class Tank{
     private Random random = new Random();
 
     Rectangle rect = new Rectangle();
+
+    FireStrategy fs = null;
 
     Tank(int x, int y, Dir dir, TankFrame tf, Group group){
         super();
@@ -31,6 +32,19 @@ public class Tank{
         rect.y = y;
         rect.width = WIDTH;
         rect.height = HEIGHT;
+
+        if (this.group == Group.GOOD) {
+            String goodFSName = (String)PropertyMgr.get("goodFS");
+            try {
+                fs = (FireStrategy) Class.forName(goodFSName).getDeclaredConstructor().newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }else {
+            fs = new DefaultFireStrategy();
+        }
+
     }
 
     public Group getGroup() {
@@ -55,16 +69,7 @@ public class Tank{
 
     // 子弹发射方法(调用fire;new一颗子弹add到子弹容器)
     public void fire() {
-        // 计算子弹在坦克中心位置发出
-        int bX = this.x + Tank.WIDTH / 2 - Bullet.WIDTH / 2;
-        int bY = this.y + Tank.HEIGHT / 2 - Bullet.HEIGHT / 2;
-        // 将TankFrame 传给Bullet; Bullet可以继续引用TankFrame
-        // 定义弹夹中子弹属性；
-        tf.bullets.add(new Bullet(bX, bY, this.dir, this.tf, this.group));
-
-        // 定义爆炸声音
-        if (this.group == Group.GOOD) new Thread(() -> new Audio("audio/tank_fire.wav").play()).start();
-
+        fs.fire(this);
     }
 
     public boolean isMove(){

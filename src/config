@@ -4,3 +4,7 @@ GAME_WIDTH=1080
 GAME_HEIGHT=960
 tankSpeed=5
 bulletSpeed=10
+
+# 配置子弹策略
+goodFS = com.cosmos.tank.FourDirFireStrategy
+badFS = com.cosmos.tank.DefaultFireStrategy

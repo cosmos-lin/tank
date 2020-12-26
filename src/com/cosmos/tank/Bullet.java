@@ -2,8 +2,6 @@ package com.cosmos.tank;
 
 import java.awt.*;
 
-import static com.cosmos.tank.ResourceMgr.explodes;
-
 public class Bullet {
     private int x,y;
 //    private static Dir dir; // 注意如果static修饰，子弹会随tank一起改变方向
@@ -31,6 +29,8 @@ public class Bullet {
         rect.y = y;
         rect.width = WIDTH;
         rect.height = HEIGHT;
+        // 将子弹添加到弹夹
+        tf.bullets.add(this);
     }
 
     // 封装自动paint(画出自己的位置）
