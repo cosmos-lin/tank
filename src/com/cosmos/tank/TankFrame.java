@@ -1,27 +1,30 @@
 package com.cosmos.tank;
 
+import com.cosmos.tank.abstractfactory.*;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class TankFrame extends Frame {
 
-    static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
+    public static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
     // new Tank对象时，将自己传入Tank，从而让Tank可以引用TankFrame
     private Tank myTank = new Tank(200, 200, Dir.DOWN, this, Group.GOOD);
     // 定义队列存储子弹
-    List<Bullet> bullets = new ArrayList<>();
+    public List<BaseBullet> bullets = new ArrayList<>();
     // 定义队列存储敌方坦克
-    List<Tank> tanks = new ArrayList<>();
+    public List<BaseTank> tanks = new ArrayList<>();
     // 定义存储爆炸队列
-    List<EXplode> explodes = new ArrayList<>();
+    public List<BaseExplode> explodes = new ArrayList<>();
+    // new 默认工厂对象
+    public GameFactory gf = new DefaultFactory();
 
-    EXplode eXplode = new EXplode(100, 100, this);
+    Explode eXplode = new Explode(100, 100, this);
     /*
     继承Frame类，定义构造方法
      */

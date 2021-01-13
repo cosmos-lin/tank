@@ -1,8 +1,10 @@
 package com.cosmos.tank;
 
+import com.cosmos.tank.abstractfactory.BaseExplode;
+
 import java.awt.*;
 
-public class EXplode {
+public class Explode extends BaseExplode {
     public static int WIDTH = ResourceMgr.explodes[0].getWidth();
     public static int HEIGHT = ResourceMgr.explodes[0].getHeight();
 
@@ -12,7 +14,7 @@ public class EXplode {
 
     private int step = 0;
 
-    public EXplode(int x, int y, TankFrame tf){
+    public Explode(int x, int y, TankFrame tf){
         this.x = x;
         this.y = y;
         this.tf = tf;

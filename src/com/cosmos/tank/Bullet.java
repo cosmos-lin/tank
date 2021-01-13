@@ -1,10 +1,11 @@
 package com.cosmos.tank;
 
+import com.cosmos.tank.abstractfactory.BaseBullet;
+import com.cosmos.tank.abstractfactory.BaseTank;
+
 import java.awt.*;
 
-import static com.cosmos.tank.ResourceMgr.explodes;
-
-public class Bullet {
+public class Bullet extends BaseBullet {
     private int x,y;
 //    private static Dir dir; // 注意如果static修饰，子弹会随tank一起改变方向
     private Dir dir;
@@ -19,7 +20,7 @@ public class Bullet {
     Rectangle rect = new Rectangle();
 
     // 构造方法
-    Bullet(int x, int y, Dir dir, TankFrame tf, Group group){
+    public Bullet(int x, int y, Dir dir, Group group, TankFrame tf){
         this.x = x;
         this.y = y;
         this.dir = dir;
@@ -83,7 +84,7 @@ public class Bullet {
     }
 
     // 定义碰撞检测方法
-    public void collideWith(Tank tank) {
+    public void collideWith(BaseTank tank) {
         if (this.group == tank.getGroup()) return;
 //        Rectangle rect1 = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
 //        Rectangle rect2 = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH, Tank.HEIGHT);
@@ -91,10 +92,11 @@ public class Bullet {
             tank.die();
             this.die();
 
-            int eX = tank.getX() + Tank.WIDTH/2 - EXplode.WIDTH/2;
-            int eY = tank.getY() + Tank.HEIGHT/2 - EXplode.HEIGHT/2;
+            int eX = tank.getX() + Tank.WIDTH/2 - Explode.WIDTH/2;
+            int eY = tank.getY() + Tank.HEIGHT/2 - Explode.HEIGHT/2;
             // 将碰撞爆炸加入到explodes队列
-            tf.explodes.add(new EXplode(eX, eY, tf));
+//            tf.explodes.add(new Explode(eX, eY, tf));
+            tf.explodes.add(tf.gf.createExplode(eX, eY, tf));
         }
     }
 

@@ -1,25 +1,24 @@
 package com.cosmos.tank;
 
+import com.cosmos.tank.abstractfactory.BaseTank;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Tank{
-    private int x, y;
-    private Dir dir = Dir.DOWN;
-    private Group group = Group.BAD;
+public class Tank extends BaseTank {
+    public int x, y;
+    public Dir dir = Dir.DOWN;
     private final static int SPEED = 2;
     private boolean move = true;
-    private TankFrame tf = null;
+    public TankFrame tf = null;
     public static int WIDTH = ResourceMgr.GoodtankU.getWidth();
     public static int HEIGHT = ResourceMgr.GoodtankU.getHeight();
 
     private boolean living = true;
     private Random random = new Random();
 
-    Rectangle rect = new Rectangle();
-
-    Tank(int x, int y, Dir dir, TankFrame tf, Group group){
+    public Tank(int x, int y, Dir dir, TankFrame tf, Group group){
         super();
         this.x = x;
         this.y = y;
@@ -60,7 +59,12 @@ public class Tank{
         int bY = this.y + Tank.HEIGHT / 2 - Bullet.HEIGHT / 2;
         // 将TankFrame 传给Bullet; Bullet可以继续引用TankFrame
         // 定义弹夹中子弹属性；
-        tf.bullets.add(new Bullet(bX, bY, this.dir, this.tf, this.group));
+        Dir[] dirs = Dir.values();
+        for (Dir dir : dirs){
+            // 创建子弹
+            tf.gf.createBullet(bX, bY, dir, group, tf);
+        }
+        tf.bullets.add(tf.gf.createBullet(bX, bY, this.dir, this.group, tf));
 
         // 定义爆炸声音
         if (this.group == Group.GOOD) new Thread(() -> new Audio("audio/tank_fire.wav").play()).start();
