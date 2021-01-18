@@ -23,7 +23,8 @@ public class TankFrame extends Frame {
     public List<BaseExplode> explodes = new ArrayList<>();
     // new 默认工厂对象
     public GameFactory gf = new DefaultFactory();
-
+    // new RectFactory
+//    public RectFactory gf = new RectFactory();
     Explode eXplode = new Explode(100, 100, this);
     /*
     继承Frame类，定义构造方法
