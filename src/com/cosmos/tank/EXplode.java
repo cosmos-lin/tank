@@ -8,14 +8,14 @@ public class EXplode {
 
     private int x, y;
     private boolean living = true;
-    TankFrame tf = null;
+    GameModel gm;
 
     private int step = 0;
 
-    public EXplode(int x, int y, TankFrame tf){
+    public EXplode(int x, int y, GameModel gm){
         this.x = x;
         this.y = y;
-        this.tf = tf;
+        this.gm = gm;
 
         new Thread(() -> new Audio("audio/explode.wav").play()).start();
     }
@@ -26,7 +26,7 @@ public class EXplode {
         if (step >= ResourceMgr.explodes.length){
             step = 0;
             // 画完爆炸效果后移除队列
-            tf.explodes.remove(this);
+            gm.explodes.remove(this);
         }
 
     }

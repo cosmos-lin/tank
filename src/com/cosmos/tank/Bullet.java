@@ -8,7 +8,7 @@ public class Bullet {
     private Dir dir;
     private Group group = Group.BAD;
     private final static int SPEED = 10;
-    TankFrame tf = null;
+    GameModel gm;
     public static int WIDTH = ResourceMgr.bulletD.getWidth();
     public static int HEIGHT = ResourceMgr.bulletD.getHeight();
 
@@ -17,11 +17,11 @@ public class Bullet {
     Rectangle rect = new Rectangle();
 
     // 构造方法
-    Bullet(int x, int y, Dir dir, TankFrame tf, Group group){
+    Bullet(int x, int y, Dir dir, GameModel gm, Group group){
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.tf = tf;
+        this.gm = gm;
         this.group = group;
 
         //
@@ -30,14 +30,14 @@ public class Bullet {
         rect.width = WIDTH;
         rect.height = HEIGHT;
         // 将子弹添加到弹夹
-        tf.bullets.add(this);
+        gm.bullets.add(this);
     }
 
     // 封装自动paint(画出自己的位置）
     public void paint(Graphics g){
 
         // living为false,删除子弹本身对象
-        if (!living) tf.bullets.remove(this);
+        if (!living) gm.bullets.remove(this);
 
         switch (dir) {
             case LEFT:
@@ -94,7 +94,7 @@ public class Bullet {
             int eX = tank.getX() + Tank.WIDTH/2 - EXplode.WIDTH/2;
             int eY = tank.getY() + Tank.HEIGHT/2 - EXplode.HEIGHT/2;
             // 将碰撞爆炸加入到explodes队列
-            tf.explodes.add(new EXplode(eX, eY, tf));
+            gm.explodes.add(new EXplode(eX, eY, gm));
         }
     }
 

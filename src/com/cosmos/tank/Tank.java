@@ -9,7 +9,7 @@ public class Tank{
     Group group = Group.BAD;
     private final static int SPEED = 2;
     private boolean move = true;
-    TankFrame tf = null;
+    GameModel gm;
     public static int WIDTH = ResourceMgr.GoodtankU.getWidth();
     public static int HEIGHT = ResourceMgr.GoodtankU.getHeight();
 
@@ -20,13 +20,13 @@ public class Tank{
 
     FireStrategy fs = null;
 
-    Tank(int x, int y, Dir dir, TankFrame tf, Group group){
+    Tank(int x, int y, Dir dir, Group group, GameModel gm){
         super();
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.tf = tf;
         this.group = group;
+        this.gm = gm;
 
         rect.x = x;
         rect.y = y;
@@ -80,7 +80,7 @@ public class Tank{
     public void paint(Graphics g) {
 
         // living为false, 删除坦克
-        if (!living) tf.tanks.remove(this);
+        if (!living) gm.tanks.remove(this);
         // 读取tank图片
         switch (dir){
             case LEFT:
