@@ -3,7 +3,7 @@ package com.cosmos.tank;
 import java.awt.*;
 import java.util.Random;
 
-public class Tank{
+public class Tank extends GameObject{
     int x, y;
     Dir dir = Dir.DOWN;
     Group group = Group.BAD;
@@ -80,7 +80,7 @@ public class Tank{
     public void paint(Graphics g) {
 
         // living为false, 删除坦克
-        if (!living) gm.tanks.remove(this);
+        if (!living) gm.remove(this);
         // 读取tank图片
         switch (dir){
             case LEFT:

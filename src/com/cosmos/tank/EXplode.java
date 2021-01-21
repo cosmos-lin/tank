@@ -2,7 +2,7 @@ package com.cosmos.tank;
 
 import java.awt.*;
 
-public class EXplode {
+public class EXplode extends GameObject{
     public static int WIDTH = ResourceMgr.explodes[0].getWidth();
     public static int HEIGHT = ResourceMgr.explodes[0].getHeight();
 
@@ -26,7 +26,7 @@ public class EXplode {
         if (step >= ResourceMgr.explodes.length){
             step = 0;
             // 画完爆炸效果后移除队列
-            gm.explodes.remove(this);
+            gm.remove(this);
         }
 
     }

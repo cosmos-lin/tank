@@ -2,7 +2,7 @@ package com.cosmos.tank;
 
 import java.awt.*;
 
-public class Bullet {
+public class Bullet extends GameObject {
     private int x,y;
 //    private static Dir dir; // 注意如果static修饰，子弹会随tank一起改变方向
     private Dir dir;
@@ -30,14 +30,14 @@ public class Bullet {
         rect.width = WIDTH;
         rect.height = HEIGHT;
         // 将子弹添加到弹夹
-        gm.bullets.add(this);
+        gm.add(this);
     }
 
     // 封装自动paint(画出自己的位置）
     public void paint(Graphics g){
 
         // living为false,删除子弹本身对象
-        if (!living) gm.bullets.remove(this);
+        if (!living) gm.remove(this);
 
         switch (dir) {
             case LEFT:
@@ -94,7 +94,7 @@ public class Bullet {
             int eX = tank.getX() + Tank.WIDTH/2 - EXplode.WIDTH/2;
             int eY = tank.getY() + Tank.HEIGHT/2 - EXplode.HEIGHT/2;
             // 将碰撞爆炸加入到explodes队列
-            gm.explodes.add(new EXplode(eX, eY, gm));
+            gm.add(new EXplode(eX, eY, gm));
         }
     }
 
