@@ -83,8 +83,8 @@ public class Bullet extends GameObject {
     }
 
     // 定义碰撞检测方法
-    public void collideWith(Tank tank) {
-        if (this.group == tank.getGroup()) return;
+    public boolean collideWith(Tank tank) {
+        if (this.group == tank.getGroup()) return false;
 //        Rectangle rect1 = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
 //        Rectangle rect2 = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH, Tank.HEIGHT);
         if (rect.intersects(tank.rect)) {
@@ -95,7 +95,9 @@ public class Bullet extends GameObject {
             int eY = tank.getY() + Tank.HEIGHT/2 - EXplode.HEIGHT/2;
             // 将碰撞爆炸加入到explodes队列
             gm.add(new EXplode(eX, eY, gm));
+            return true;
         }
+        return false;
     }
 
     private void die() {

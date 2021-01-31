@@ -1,10 +1,13 @@
 package com.cosmos.tank;
 
+import org.w3c.dom.css.Rect;
+
 import java.awt.*;
 import java.util.Random;
 
 public class Tank extends GameObject{
     int x, y;
+    int old_x, old_y;
     Dir dir = Dir.DOWN;
     Group group = Group.BAD;
     private final static int SPEED = 2;
@@ -100,6 +103,8 @@ public class Tank extends GameObject{
     }
 
     private void moving() {
+        old_x = x;
+        old_y = y;
         // move为false,不进行移动
         if (!move) return;
 
@@ -162,4 +167,20 @@ public class Tank extends GameObject{
     public int getY() {
         return y;
     }
+
+    public Rectangle getRect(){
+        return rect;
+    }
+
+    public void stop(){
+        move = false;
+    }
+
+    public void handle_collide(){
+        // 坦克互相碰撞回退到碰撞前上一位置
+        x = old_x;
+        y = old_y;
+    }
+
+
 }

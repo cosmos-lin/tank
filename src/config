@@ -8,3 +8,5 @@ bulletSpeed=10
 # 配置子弹策略
 goodFS = com.cosmos.tank.FourDirFireStrategy
 badFS = com.cosmos.tank.DefaultFireStrategy
+
+colliders=com.cosmos.tank.cor.BulletTankCollider, com.cosmos.tank.cof.TankTankCollider

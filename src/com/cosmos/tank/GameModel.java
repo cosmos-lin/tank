@@ -1,5 +1,7 @@
 package com.cosmos.tank;
 
+import com.cosmos.tank.cor.ColliderChain;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,9 @@ public class GameModel {
 
     // bullets、tank、explode的对象都添加到GameObject父类队列
     private List<GameObject> objects = new ArrayList<>();
+
+    // new chain
+    ColliderChain chain = new ColliderChain();
 
     public GameModel(){
         // 加载地方坦克数量
@@ -70,6 +75,15 @@ public class GameModel {
 //                bullets.get(i).collideWith(tanks.get(j));
 //            }
 //        }
+
+        // 对容器中的对象进行碰撞检测
+        for (int i = 0; i < objects.size(); i++){
+            for (int j = i+1; j < objects.size(); j++){
+                GameObject o1 = objects.get(i);
+                GameObject o2 = objects.get(j);
+                chain.collide(o1, o2);
+            }
+        }
 
     }
 
