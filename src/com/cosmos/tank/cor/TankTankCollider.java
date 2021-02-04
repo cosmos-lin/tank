@@ -16,6 +16,7 @@ public class TankTankCollider implements Collider {
                 t2.handle_collide();
             }
         }
+
         return true;
     }
 }

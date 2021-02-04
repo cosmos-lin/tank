@@ -14,7 +14,7 @@ public class Bullet extends GameObject {
 
     public boolean living = true;
 
-    Rectangle rect = new Rectangle();
+    public Rectangle rect = new Rectangle();
 
     // 构造方法
     Bullet(int x, int y, Dir dir, GameModel gm, Group group){
@@ -100,7 +100,7 @@ public class Bullet extends GameObject {
         return false;
     }
 
-    private void die() {
+    public void die() {
         living = false;
     }
 }
