@@ -8,7 +8,7 @@ public class FourDirFireStrategy implements FireStrategy {
         // 循环四个方向发射子弹
         Dir[] dirs = Dir.values();
         for (Dir dir : dirs) {
-            new Bullet(bX, bY, dir, t.gm,  t.group);
+            new Bullet(bX, bY, dir, t.group);
         }
 
 

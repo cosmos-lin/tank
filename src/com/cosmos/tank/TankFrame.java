@@ -12,11 +12,8 @@ import java.util.List;
 public class TankFrame extends Frame {
 
     static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
-    GameModel gm = new GameModel();
+    GameModel gm = GameModel.getInstance();
 
-
-
-    EXplode eXplode = new EXplode(100, 100, gm);
     /*
     继承Frame类，定义构造方法
      */

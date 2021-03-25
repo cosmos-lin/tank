@@ -1,6 +1,7 @@
 package com.cosmos.tank.cor;
 
 import com.cosmos.tank.Bullet;
+import com.cosmos.tank.EXplode;
 import com.cosmos.tank.GameObject;
 import com.cosmos.tank.Tank;
 
@@ -11,7 +12,13 @@ public class BulletTankCollier implements Collider {
         if (o1 instanceof Bullet && o2 instanceof Tank){
             Bullet b = (Bullet) o1;
             Tank t = (Tank) o2;
-            if (b.collideWith(t)){
+            if (b.group == t.getGroup()) return true;
+            if (b.rect.intersects(t.rect)){
+                t.die();
+                b.die();
+                int eX = t.getX() + Tank.WIDTH/2 - EXplode.WIDTH/2;
+                int eY = t.getY() + Tank.HEIGHT/2 - EXplode.HEIGHT/2;
+                new EXplode(eX, eY);
                 return false;
             }
         }else if (o1 instanceof Tank && o2 instanceof Bullet){

@@ -8,16 +8,15 @@ public class EXplode extends GameObject{
 
     private int x, y;
     private boolean living = true;
-    GameModel gm;
 
     private int step = 0;
 
-    public EXplode(int x, int y, GameModel gm){
+    public EXplode(int x, int y){
         this.x = x;
         this.y = y;
-        this.gm = gm;
 
         new Thread(() -> new Audio("audio/explode.wav").play()).start();
+        GameModel.getInstance().add(this);
     }
 
     public void paint(Graphics g) {
@@ -26,7 +25,7 @@ public class EXplode extends GameObject{
         if (step >= ResourceMgr.explodes.length){
             step = 0;
             // 画完爆炸效果后移除队列
-            gm.remove(this);
+            GameModel.getInstance().remove(this);
         }
 
     }

@@ -6,9 +6,8 @@ public class Bullet extends GameObject {
     private int x,y;
 //    private static Dir dir; // 注意如果static修饰，子弹会随tank一起改变方向
     private Dir dir;
-    private Group group = Group.BAD;
+    public Group group = Group.BAD;
     private final static int SPEED = 10;
-    GameModel gm;
     public static int WIDTH = ResourceMgr.bulletD.getWidth();
     public static int HEIGHT = ResourceMgr.bulletD.getHeight();
 
@@ -17,11 +16,10 @@ public class Bullet extends GameObject {
     public Rectangle rect = new Rectangle();
 
     // 构造方法
-    Bullet(int x, int y, Dir dir, GameModel gm, Group group){
+    Bullet(int x, int y, Dir dir, Group group){
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.gm = gm;
         this.group = group;
 
         //
@@ -30,14 +28,14 @@ public class Bullet extends GameObject {
         rect.width = WIDTH;
         rect.height = HEIGHT;
         // 将子弹添加到弹夹
-        gm.add(this);
+        GameModel.getInstance().add(this);
     }
 
     // 封装自动paint(画出自己的位置）
     public void paint(Graphics g){
 
         // living为false,删除子弹本身对象
-        if (!living) gm.remove(this);
+        if (!living) GameModel.getInstance().remove(this);
 
         switch (dir) {
             case LEFT:
@@ -94,7 +92,7 @@ public class Bullet extends GameObject {
             int eX = tank.getX() + Tank.WIDTH/2 - EXplode.WIDTH/2;
             int eY = tank.getY() + Tank.HEIGHT/2 - EXplode.HEIGHT/2;
             // 将碰撞爆炸加入到explodes队列
-            gm.add(new EXplode(eX, eY, gm));
+            GameModel.getInstance().add(new EXplode(eX, eY));
             return true;
         }
         return false;
