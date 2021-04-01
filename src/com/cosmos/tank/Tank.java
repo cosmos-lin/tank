@@ -1,8 +1,13 @@
 package com.cosmos.tank;
 
+import com.cosmos.tank.observer.TankFireEvent;
+import com.cosmos.tank.observer.TankFireHandler;
+import com.cosmos.tank.observer.TankFireObserver;
 import org.w3c.dom.css.Rect;
 
 import java.awt.*;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class Tank extends GameObject{
@@ -56,7 +61,14 @@ public class Tank extends GameObject{
     public int getHeight(){
         return HEIGHT;
     }
-
+    // 将子弹handler转出List, 遍历每个handler处理该event(不同handler不同处理方式)
+    private List<TankFireObserver> fireObservers = Arrays.asList(new TankFireHandler());
+    public void handlerFire(){
+        TankFireEvent event = new TankFireEvent(this);
+        for(TankFireObserver o : fireObservers){
+            o.actionOnFire(event);
+        }
+    }
     public Group getGroup() {
         return group;
     }
