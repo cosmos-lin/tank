@@ -3,7 +3,6 @@ package com.cosmos.tank;
 import java.awt.*;
 
 public class Bullet extends GameObject {
-    private int x,y;
 //    private static Dir dir; // 注意如果static修饰，子弹会随tank一起改变方向
     private Dir dir;
     public Group group = Group.BAD;
@@ -29,6 +28,16 @@ public class Bullet extends GameObject {
         rect.height = HEIGHT;
         // 将子弹添加到弹夹
         GameModel.getInstance().add(this);
+    }
+
+    @Override
+    public int getWidth() {
+        return WIDTH;
+    }
+
+    @Override
+    public int getHeight() {
+        return HEIGHT;
     }
 
     // 封装自动paint(画出自己的位置）

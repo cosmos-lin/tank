@@ -6,7 +6,6 @@ import java.awt.*;
 import java.util.Random;
 
 public class Tank extends GameObject{
-    int x, y;
     int old_x, old_y;
     Dir dir = Dir.DOWN;
     Group group = Group.BAD;
@@ -46,6 +45,16 @@ public class Tank extends GameObject{
             fs = new DefaultFireStrategy();
         }
 
+    }
+
+    @Override
+    public int getWidth(){
+        return WIDTH;
+    }
+
+    @Override
+    public int getHeight(){
+        return HEIGHT;
     }
 
     public Group getGroup() {

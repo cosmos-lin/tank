@@ -6,7 +6,7 @@ public class Main {
         TankFrame tankFrame = new TankFrame();
 
         while (true){
-            Thread.sleep(25);
+            Thread.sleep(100);
             // repaint会自动调用paint方法
             tankFrame.repaint();
         }
