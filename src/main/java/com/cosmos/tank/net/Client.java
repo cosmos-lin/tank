@@ -74,9 +74,9 @@ class ClientChannelInitializer extends ChannelInitializer<SocketChannel>{
     }
 }
 
-class ClientHandler extends ChannelInboundHandlerAdapter{
+class ClientHandler extends SimpleChannelInboundHandler<TankJoinMsg>{
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception{
+    public void channelRead0(ChannelHandlerContext ctx, TankJoinMsg msg) throws Exception{
 //        ByteBuf buf = null;
 //        try {
 //            buf = (ByteBuf) msg;
