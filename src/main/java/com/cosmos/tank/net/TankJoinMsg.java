@@ -3,11 +3,12 @@ package com.cosmos.tank.net;
 import com.cosmos.tank.Dir;
 import com.cosmos.tank.Group;
 import com.cosmos.tank.Tank;
+import com.cosmos.tank.TankFrame;
 
 import java.io.*;
 import java.util.UUID;
 
-public class TankJoinMsg {
+public class TankJoinMsg extends Msg{
     public int x, y;
     public Dir dir;
     public boolean moving;
@@ -48,6 +49,7 @@ public class TankJoinMsg {
         }
     }
 
+    @Override
     public byte[] toBytes(){
         // 定义一个字节数组输出流
         ByteArrayOutputStream baos = null;
@@ -87,6 +89,17 @@ public class TankJoinMsg {
 
         }
         return bytes;
+    }
+
+    @Override
+    public void handler(){
+        // 判断不属于自己或uuid不为空时，将坦克加进列表
+        if (this.id.equals(TankFrame.INSTANCE.getMainTank().getId()) ||
+                TankFrame.INSTANCE.findByUUID(this.id) != null) return;
+        System.out.println(this);
+        Tank t = new Tank(this);
+
+        TankFrame.INSTANCE.addTank(t);
     }
 
     @Override

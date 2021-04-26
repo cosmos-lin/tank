@@ -29,7 +29,7 @@ public class Main {
             }
         }).start();
         // 连接服务器
-        Client c = new Client();
-        c.connect();
+        Client client = Client.getInstance();
+        client.connect();
     }
 }

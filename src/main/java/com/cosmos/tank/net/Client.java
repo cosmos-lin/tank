@@ -17,6 +17,11 @@ import java.util.UUID;
 
 
 public class Client {
+    // 设为单例模式
+    private static final Client INSTANCE = new Client();
+    private Client(){}
+    public static Client getInstance(){return INSTANCE;}
+
     private Channel channel = null;
 
     public void connect(){
@@ -51,18 +56,13 @@ public class Client {
             group.shutdownGracefully();
         }
     }
-    public void send(String msg){
-        ByteBuf buf = Unpooled.copiedBuffer(msg.getBytes());
-        channel.writeAndFlush(buf);
-    }
-
-    public static void main(String[] args) {
-        Client c = new Client();
-        c.connect();
+    public void send(TankJoinMsg msg){
+//        ByteBuf buf = Unpooled.copiedBuffer(msg.getBytes());
+        channel.writeAndFlush(msg);
     }
 
     public void closeConnect(){
-        this.send("_bye_");
+//        this.send("_bye_");
     }
 }
 
@@ -89,13 +89,7 @@ class ClientHandler extends SimpleChannelInboundHandler<TankJoinMsg>{
 //        }finally {
 //            if (buf != null) ReferenceCountUtil.release(buf);
 //        }
-        // 判断不属于自己或uuid不为空时，将坦克加进列表
-        if (msg.id.equals(TankFrame.INSTANCE.getMainTank().getId()) ||
-                TankFrame.INSTANCE.findByUUID(msg.id) != null) return;
-        System.out.println(msg);
-        Tank t = new Tank(msg);
-
-        TankFrame.INSTANCE.addTank(t);
+        msg.handler();
     }
 
     @Override
