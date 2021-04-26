@@ -7,12 +7,17 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 public class TankFrame extends Frame {
 
+    public static final TankFrame INSTANCE = new TankFrame();
+    Random r = new Random();
     static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
     // new Tank对象时，将自己传入Tank，从而让Tank可以引用TankFrame
-    private Tank myTank = new Tank(200, 200, Dir.DOWN, this, Group.GOOD);
+    private Tank myTank = new Tank(r.nextInt(GAME_WIDTH), r.nextInt(GAME_HEIGHT), Dir.DOWN, Group.GOOD, this);
+//    private Tank myTank = new Tank(500, 400, Dir.DOWN, Group.GOOD, this);
     // 定义队列存储子弹
     List<Bullet> bullets = new ArrayList<>();
     // 定义队列存储敌方坦克
@@ -24,10 +29,10 @@ public class TankFrame extends Frame {
     /*
     继承Frame类，定义构造方法
      */
-    public TankFrame() {
+    private TankFrame() {
 
         // setVisible(true)设置为可见
-        setVisible(true);
+//        setVisible(true);
         // 设置窗口大小
         setSize(GAME_WIDTH, GAME_HEIGHT);
         //设置窗口为不可变
@@ -54,6 +59,28 @@ public class TankFrame extends Frame {
             }
         });
 
+    }
+
+    public void addTank(Tank t){
+        for (int i=0; i<tanks.size(); i++){
+            if (t.getId().equals(tanks.get(i).getId())){
+                return;
+            }
+        }
+        tanks.add(t);
+    }
+
+    public Tank findByUUID(UUID id){
+        for (int i=0; i<tanks.size(); i++){
+            if (id.equals(tanks.get(i).getId())){
+                return tanks.get(i);
+            }
+        }
+        return null;
+    }
+
+    public Tank getMainTank(){
+        return this.myTank;
     }
     // 处理双缓冲（内存-> 显存）；解决闪烁
     Image offScreenImage = null;

@@ -1,33 +1,47 @@
 package com.cosmos.tank;
 
+import com.cosmos.tank.net.TankJoinMsg;
+
 import java.awt.*;
 import java.util.Random;
+import java.util.UUID;
 
 public class Tank{
     private int x, y;
     private Dir dir = Dir.DOWN;
     private Group group = Group.BAD;
     private final static int SPEED = 2;
-    private boolean move = true;
+    private boolean move = false;
     private TankFrame tf = null;
     public static int WIDTH = ResourceMgr.GoodtankU.getWidth();
     public static int HEIGHT = ResourceMgr.GoodtankU.getHeight();
 
+    private UUID id = UUID.randomUUID();
     private boolean living = true;
     private Random random = new Random();
 
     Rectangle rect = new Rectangle();
-
-    Tank(int x, int y, Dir dir, TankFrame tf, Group group){
+    // 构造方法 -> 显示其他玩家时候调用
+    public Tank(TankJoinMsg msg){
+        super();
+        this.x = msg.x;
+        this.y = msg.y;
+        this.dir = msg.dir;
+        this.move = msg.moving;
+        this.group = msg.group;
+        this.id = msg.id;
+    }
+    // 构造方法 -> 初始化自己主站坦克调用
+    public Tank(int x, int y, Dir dir, Group group, TankFrame tf){
         super();
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.tf = tf;
         this.group = group;
+        this.tf = tf;
 
-        rect.x = x;
-        rect.y = y;
+        rect.x = this.x;
+        rect.y = this.y;
         rect.width = WIDTH;
         rect.height = HEIGHT;
     }
@@ -75,6 +89,11 @@ public class Tank{
 
         // living为false, 删除坦克
         if (!living) tf.tanks.remove(this);
+        // uuid on head
+        Color c = g.getColor();
+        g.setColor(Color.YELLOW);
+        g.drawString(id.toString(), this.x, this.y - 10);
+        g.setColor(c);
         // 读取tank图片
         switch (dir){
             case LEFT:
@@ -155,5 +174,12 @@ public class Tank{
 
     public int getY() {
         return y;
+    }
+
+    public UUID getId(){
+        return id;
+    }
+    public void setId(UUID id){
+        this.id = id;
     }
 }

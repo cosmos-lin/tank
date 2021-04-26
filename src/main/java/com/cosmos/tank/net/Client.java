@@ -2,6 +2,8 @@ package com.cosmos.tank.net;
 
 import com.cosmos.tank.Dir;
 import com.cosmos.tank.Group;
+import com.cosmos.tank.Tank;
+import com.cosmos.tank.TankFrame;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -73,7 +75,7 @@ class ClientChannelInitializer extends ChannelInitializer<SocketChannel>{
                 .addLast(new ClientHandler());
     }
 }
-
+// SimpleChannelInboundHandler 可指定泛型
 class ClientHandler extends SimpleChannelInboundHandler<TankJoinMsg>{
     @Override
     public void channelRead0(ChannelHandlerContext ctx, TankJoinMsg msg) throws Exception{
@@ -87,11 +89,17 @@ class ClientHandler extends SimpleChannelInboundHandler<TankJoinMsg>{
 //        }finally {
 //            if (buf != null) ReferenceCountUtil.release(buf);
 //        }
+        // 判断不属于自己或uuid不为空时，将坦克加进列表
+        if (msg.id.equals(TankFrame.INSTANCE.getMainTank().getId()) ||
+                TankFrame.INSTANCE.findByUUID(msg.id) != null) return;
         System.out.println(msg);
+        Tank t = new Tank(msg);
+
+        TankFrame.INSTANCE.addTank(t);
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception{
-        ctx.writeAndFlush(new TankJoinMsg(5, 8, Dir.DOWN, true, Group.GOOD, UUID.randomUUID()));
+        ctx.writeAndFlush(new TankJoinMsg(TankFrame.INSTANCE.getMainTank()));
     }
 }

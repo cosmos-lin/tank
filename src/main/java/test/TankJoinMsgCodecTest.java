@@ -2,6 +2,7 @@ package test;
 
 import com.cosmos.tank.Dir;
 import com.cosmos.tank.Group;
+import com.cosmos.tank.TankFrame;
 import com.cosmos.tank.net.TankJoinMsg;
 import com.cosmos.tank.net.TankJoinMsgDecoder;
 import com.cosmos.tank.net.TankJoinMsgEncoder;
@@ -20,7 +21,7 @@ public class TankJoinMsgCodecTest {
         // 定义虚拟网络连接channel
         EmbeddedChannel ch = new EmbeddedChannel();
         UUID id = UUID.randomUUID();
-        TankJoinMsg msg = new TankJoinMsg(5, 10, Dir.DOWN, true, Group.BAD, id);
+        TankJoinMsg msg = new TankJoinMsg(TankFrame.INSTANCE.getMainTank());
         // 往channel的 pipeline上添加Encode
         ch.pipeline().addLast(new TankJoinMsgEncoder());
         // 往channel中写数据
@@ -49,7 +50,7 @@ public class TankJoinMsgCodecTest {
         EmbeddedChannel ch = new EmbeddedChannel();
 
         UUID id = UUID.randomUUID();
-        TankJoinMsg msg = new TankJoinMsg(5, 10, Dir.DOWN, true, Group.BAD, id);
+        TankJoinMsg msg = new TankJoinMsg(TankFrame.INSTANCE.getMainTank());
         ch.pipeline().addLast(new TankJoinMsgDecoder());
 
         ByteBuf buf = Unpooled.buffer();
