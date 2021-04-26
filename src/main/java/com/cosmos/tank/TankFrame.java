@@ -5,10 +5,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
-import java.util.UUID;
 
 public class TankFrame extends Frame {
 
@@ -21,7 +19,8 @@ public class TankFrame extends Frame {
     // 定义队列存储子弹
     List<Bullet> bullets = new ArrayList<>();
     // 定义队列存储敌方坦克
-    List<Tank> tanks = new ArrayList<>();
+    // Map 根据根据key:UUID直接获取对应tank,效率较高(list获取得全部遍历；map 直接对key取hash,所以速度快)
+    Map<UUID,Tank> tanks = new HashMap<>();
     // 定义存储爆炸队列
     List<EXplode> explodes = new ArrayList<>();
 
@@ -67,16 +66,12 @@ public class TankFrame extends Frame {
                 return;
             }
         }
-        tanks.add(t);
+        tanks.put(t.getId(), t);
     }
 
     public Tank findByUUID(UUID id){
-        for (int i=0; i<tanks.size(); i++){
-            if (id.equals(tanks.get(i).getId())){
-                return tanks.get(i);
-            }
-        }
-        return null;
+
+        return tanks.get(id);
     }
 
     public Tank getMainTank(){
@@ -104,9 +99,9 @@ public class TankFrame extends Frame {
         myTank.paint(g);
         Color color = g.getColor();
         g.setColor(color.WHITE);
-        g.drawString("子弹数量：" + bullets.size(),10, 60);
-        g.drawString("敌方坦克数量：" + tanks.size(),10, 80);
-        g.drawString("爆炸数量：" + explodes.size(),10, 100);
+        g.drawString("bullets:" + bullets.size(),10, 60);
+        g.drawString("tanks:" + tanks.size(),10, 80);
+        g.drawString("explodes:" + explodes.size(),10, 100);
         g.setColor(color);
         // 遍历子弹夹，绘制子弹
 
@@ -115,9 +110,7 @@ public class TankFrame extends Frame {
         }
 
         // 画出敌方坦克
-        for (int i = 0; i < tanks.size(); i++) {
-            tanks.get(i).paint(g);
-        }
+        tanks.values().stream().forEach((e) -> e.paint(g));
 
         // 遍历每颗子弹和坦克，进行碰撞检测
         for (int i = 0; i < bullets.size(); i++) {
