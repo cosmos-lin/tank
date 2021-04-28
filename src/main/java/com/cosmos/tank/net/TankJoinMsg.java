@@ -32,6 +32,7 @@ public class TankJoinMsg extends Msg{
         DataInputStream dis = new DataInputStream(new ByteArrayInputStream(bytes));
         // 先读TYPE消息， 根据TYPE消息处理不同的消息
         try {
+            // 解析属性的顺序与写进的顺序是一样的
             this.x = dis.readInt();
             this.y = dis.readInt();
             this.dir = Dir.values()[dis.readInt()];
@@ -56,6 +57,7 @@ public class TankJoinMsg extends Msg{
         DataOutputStream dos = null;
         byte[] bytes = null;
         try {
+            // 属性写出顺序
             baos = new ByteArrayOutputStream();  // 相当于在内存中开辟了一个字节数组
             dos = new DataOutputStream(baos); // DataOutputStream嵌套在ByteArrayOutputStream中，可以方便直接写数据，
             dos.writeInt(x); // 4个字节
@@ -100,6 +102,11 @@ public class TankJoinMsg extends Msg{
         Tank t = new Tank(this);
 
         TankFrame.INSTANCE.addTank(t);
+    }
+
+    @Override
+    public MsgType getMsgType(){
+        return MsgType.TankJoin;
     }
 
     @Override

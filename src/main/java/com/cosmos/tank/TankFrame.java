@@ -1,5 +1,8 @@
 package com.cosmos.tank;
 
+import com.cosmos.tank.net.Client;
+import com.cosmos.tank.net.TankStartMovingMsg;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -166,6 +169,9 @@ public class TankFrame extends Frame {
                 if (bU) myTank.setDir(Dir.UP);
                 if (bR) myTank.setDir(Dir.RIGHT);
                 if (bD) myTank.setDir(Dir.DOWN);
+
+                // 发出坦克移动消息
+                Client.getInstance().send(new TankStartMovingMsg(getMainTank()));
 
             }
         }

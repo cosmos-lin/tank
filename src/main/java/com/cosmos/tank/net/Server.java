@@ -25,6 +25,9 @@ public class Server {
                         protected void initChannel(SocketChannel ch) throws Exception{
                             // 获取 channel pipeline
                             ChannelPipeline pl = ch.pipeline();
+                            // channel增加Msg 解码和编码解析
+                            pl.addLast(new MsgEncoder());
+                            pl.addLast(new MsgDecoder());
                             pl.addLast(new ServerChildHandler());
                         }
                     })
@@ -50,6 +53,8 @@ class ServerChildHandler extends ChannelInboundHandlerAdapter{
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception{
+        System.out.println("---------------");
+        System.out.println(msg.toString()); // 查看服务器收到的消息
         Server.clients.writeAndFlush(msg);
     }
 

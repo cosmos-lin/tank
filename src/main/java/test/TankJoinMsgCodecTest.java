@@ -3,9 +3,10 @@ package test;
 import com.cosmos.tank.Dir;
 import com.cosmos.tank.Group;
 import com.cosmos.tank.TankFrame;
+import com.cosmos.tank.net.MsgEncoder;
+import com.cosmos.tank.net.MsgType;
 import com.cosmos.tank.net.TankJoinMsg;
-import com.cosmos.tank.net.TankJoinMsgDecoder;
-import com.cosmos.tank.net.TankJoinMsgEncoder;
+import com.cosmos.tank.net.MsgDecoder;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.embedded.EmbeddedChannel;
@@ -23,11 +24,18 @@ public class TankJoinMsgCodecTest {
         UUID id = UUID.randomUUID();
         TankJoinMsg msg = new TankJoinMsg(TankFrame.INSTANCE.getMainTank());
         // 往channel的 pipeline上添加Encode
-        ch.pipeline().addLast(new TankJoinMsgEncoder());
+        ch.pipeline().addLast(new MsgEncoder());
         // 往channel中写数据
         ch.writeOutbound(msg);
         // 将数据从channel中读出来
         ByteBuf buf = (ByteBuf) ch.readOutbound();
+
+        MsgType msgType = MsgType.values()[buf.readInt()];
+        assertEquals(MsgType.TankJoin, msgType);
+
+        int length = buf.readInt();
+        assertEquals(33, length);
+
         int x = buf.readInt();
         int y = buf.readInt();
         int dirOrdinal = buf.readInt();
@@ -51,10 +59,13 @@ public class TankJoinMsgCodecTest {
 
         UUID id = UUID.randomUUID();
         TankJoinMsg msg = new TankJoinMsg(TankFrame.INSTANCE.getMainTank());
-        ch.pipeline().addLast(new TankJoinMsgDecoder());
+        ch.pipeline().addLast(new MsgDecoder());
 
         ByteBuf buf = Unpooled.buffer();
-        buf.writeBytes(msg.toBytes());
+        buf.writeInt(MsgType.TankJoin.ordinal());
+        byte[] bytes = msg.toBytes();
+        buf.writeInt(bytes.length);
+        buf.writeBytes(bytes);
 
         ch.writeInbound(buf.duplicate());
         // 读

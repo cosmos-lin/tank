@@ -1,19 +1,11 @@
 package com.cosmos.tank.net;
 
-import com.cosmos.tank.Dir;
-import com.cosmos.tank.Group;
-import com.cosmos.tank.Tank;
 import com.cosmos.tank.TankFrame;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.util.ReferenceCountUtil;
-
-import java.util.UUID;
 
 
 public class Client {
@@ -56,8 +48,9 @@ public class Client {
             group.shutdownGracefully();
         }
     }
-    public void send(TankJoinMsg msg){
+    public void send(Msg msg){
 //        ByteBuf buf = Unpooled.copiedBuffer(msg.getBytes());
+        System.out.println(msg.toString());
         channel.writeAndFlush(msg);
     }
 
@@ -70,15 +63,15 @@ class ClientChannelInitializer extends ChannelInitializer<SocketChannel>{
     @Override
     protected void initChannel(SocketChannel ch) throws Exception{
         ch.pipeline() // 处理接收和发送的信息， encode decode
-                .addLast(new TankJoinMsgEncoder())
-                .addLast(new TankJoinMsgDecoder())
+                .addLast(new MsgEncoder())
+                .addLast(new MsgDecoder())
                 .addLast(new ClientHandler());
     }
 }
 // SimpleChannelInboundHandler 可指定泛型
-class ClientHandler extends SimpleChannelInboundHandler<TankJoinMsg>{
+class ClientHandler extends SimpleChannelInboundHandler<Msg>{
     @Override
-    public void channelRead0(ChannelHandlerContext ctx, TankJoinMsg msg) throws Exception{
+    public void channelRead0(ChannelHandlerContext ctx, Msg msg) throws Exception{
 //        ByteBuf buf = null;
 //        try {
 //            buf = (ByteBuf) msg;
