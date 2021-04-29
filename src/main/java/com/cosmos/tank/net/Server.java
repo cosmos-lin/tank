@@ -54,8 +54,10 @@ class ServerChildHandler extends ChannelInboundHandlerAdapter{
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception{
         System.out.println("---------------");
-        System.out.println(msg.toString()); // 查看服务器收到的消息
+//        System.out.println(msg.toString()); // 查看服务器收到的消息
+        ServerFrame.INSTANCE.updateClientMsg(msg.toString()); // 将消息显示在frame客户端
         Server.clients.writeAndFlush(msg);
+
     }
 
     @Override

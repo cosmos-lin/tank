@@ -41,7 +41,7 @@ public class Client {
             f.sync();
 
             f.channel().closeFuture().sync();
-            System.out.println("客户端退出");
+            System.out.println("connection closed");
         }catch (Exception e){
             e.printStackTrace();
         }finally {

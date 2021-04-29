@@ -2,6 +2,7 @@ package com.cosmos.tank;
 
 import com.cosmos.tank.net.Client;
 import com.cosmos.tank.net.TankStartMovingMsg;
+import com.cosmos.tank.net.TankStopMsg;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -162,17 +163,22 @@ public class TankFrame extends Frame {
         }
 
         private void setMainTankDir() {
-            if (!bU && !bL && !bR && !bD) myTank.setMove(false);
+            if (!bU && !bL && !bR && !bD) {
+                myTank.setMove(false);
+                Client.getInstance().send(new TankStopMsg(getMainTank()));
+            }
             else {
-                myTank.setMove(true);
                 if (bL) myTank.setDir(Dir.LEFT);
                 if (bU) myTank.setDir(Dir.UP);
                 if (bR) myTank.setDir(Dir.RIGHT);
                 if (bD) myTank.setDir(Dir.DOWN);
+                
 
-                // 发出坦克移动消息
-                Client.getInstance().send(new TankStartMovingMsg(getMainTank()));
-
+                if (! myTank.isMove())
+                    // 发出坦克移动消息
+                    Client.getInstance().send(new TankStartMovingMsg(getMainTank()));
+                // 更改坦克方向后，将move设为true
+                myTank.setMove(true);
             }
         }
 
